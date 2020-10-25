@@ -1,0 +1,12 @@
+.DS_store
+
+# Ignore R files
+*.Rproj
+.Rproj.user
+.RData
+.Rhistory
+.Renviron
+
+# Ignore source directory
+
+source/
