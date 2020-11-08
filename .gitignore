@@ -6,7 +6,3 @@
 .RData
 .Rhistory
 .Renviron
-
-# Ignore source directory
-
-source/
