@@ -8,9 +8,9 @@ library(lubridate)
 
 #BART DATA
 #load data from BART PD site
-download.file("https://www.bart.gov/sites/default/files/docs/2017%20UOF%20Data%2020201011%20Redacted_0.xlsx", "source/UOF_2017.xlsx")
-download.file("https://www.bart.gov/sites/default/files/docs/2018%20UOF%20Data%2020201011%20Redacted_0.xlsx", "source/UOF_2018.xlsx")
-download.file("https://www.bart.gov/sites/default/files/docs/2019%20UOF%20Data%2020201011%20Redacted_0.xlsx", "source/UOF_2019.xlsx")
+#download.file("https://www.bart.gov/sites/default/files/docs/2017%20UOF%20Data%2020201011%20Redacted_0.xlsx", "source/UOF_2017.xlsx")
+#download.file("https://www.bart.gov/sites/default/files/docs/2018%20UOF%20Data%2020201011%20Redacted_0.xlsx", "source/UOF_2018.xlsx")
+#download.file("https://www.bart.gov/sites/default/files/docs/2019%20UOF%20Data%2020201011%20Redacted_0.xlsx", "source/UOF_2019.xlsx")
 
 #define column types
 file_cols <- c("text", "text", "text", "text", "text", "date", "date", "date", "text", "text", "text", "text", "text", "text", "text", "text", "text")
@@ -52,7 +52,20 @@ pc_crosswalk.df <-
   mutate(charge_norm = base::ifelse(code_type=="ZZ", statutory_code, paste0(code_type, stat_normed))) %>%
   select(type, code_type, statutory_code, stat_normed, charge_norm, cjis, literal_display, offense_descr)
 
+#create 1:1 mapping of `literal_display` to charges
+cjis.filter <-
+  pc_crosswalk.df %>%
+  select(charge_norm, cjis) %>%
+  group_by(charge_norm) %>%
+  summarise(cjis = min(cjis)) %>%
+  pull(cjis)
+
+pc_dict.df <-
+  pc_crosswalk.df %>%
+  filter(cjis %in% cjis.filter)
+
+
 #cleanup
-remove(uof_2017.df, uof_2018.df, uof_2019.df, file_cols)
+remove(uof_2017.df, uof_2018.df, uof_2019.df, file_cols, cjis.filter)
 
 
