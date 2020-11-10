@@ -1,8 +1,8 @@
 #' analysis sandbox for BART PD use of force data
-library(rcartocolor)
-
-source("utils/analytics.R")
 source("scripts/prep_data.R")
+source("utils/analytics.R")
+
+
 
 bart_uof.df %>%
   summarize(n_distinct(`Case #`))
@@ -191,4 +191,5 @@ bart_uof.df %>%
   )
 
 
+#fare evasion deep dive
 

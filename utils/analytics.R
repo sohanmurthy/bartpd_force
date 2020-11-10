@@ -4,11 +4,7 @@
 color.dark_gray = "#A6A6A6"
 color.light_gray = "#eaeaea"
 
-#souce: https://carto.com/carto-colors/
-color.carto_sunset = c("#f3e79b","#fac484","#f8a07e","#eb7f86","#ce6693","#a059a0","#5c53a5")
-color.carto_bold = c("#7F3C8D","#11A579","#3969AC","#F2B701","#E73F74","#80BA5A","#E68310","#008695","#CF1C90","#f97b72","#4b4b8f","#A5AA99")
-
-
+library(rcartocolor)
 
 #ggplot theme for prettier charts and legends
 theme_set (
