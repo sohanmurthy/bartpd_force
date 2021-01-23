@@ -67,6 +67,7 @@ ggsave("output/fare_evasion_cases_by_race.png", dpi = 300, width = 5, height = 3
 
 
 #age distribution by race
+#absolute
 bart_uof.df %>%
   select(`Case #`, `Citizen Race`, citizen_age) %>%
   filter(`Case #` %in% cases.filter) %>%
@@ -85,7 +86,7 @@ bart_uof.df %>%
 
 ggsave("output/fare_evasion_age_distribution_by_race.png", dpi = 300, width = 4.5, height = 3.5)
 
-
+#relative to race
 bart_uof.df %>%
   select(`Case #`, `Citizen Race`, citizen_age) %>%
   filter(`Case #` %in% cases.filter) %>%
@@ -145,30 +146,6 @@ bart_uof.df %>%
 
 ggsave("output/fare_evasion_force_tactics_dist_race.png", dpi = 300, width = 4.5, height = 6.5)
 
-bart_uof.df %>%
-  select(`Case #`, `UOF: Type force used`, `Citizen Race`) %>%
-  filter(`Citizen Race` %in% c("Black", "White", "Hispanic"),
-         `Case #` %in% cases.filter) %>%
-  group_by(`UOF: Type force used`, `Citizen Race`) %>%
-  summarize(num_cases = n_distinct(`Case #`)) %>%
-  mutate(`UOF: Type force used` = factor(`UOF: Type force used`, levels = rev(tactics.order)),
-         `Citizen Race` = factor(`Citizen Race`, levels = c("Black", "Hispanic", "White"))) %>%
-  ggplot(aes(x = `Citizen Race`, y = `UOF: Type force used`, fill = num_cases, label = num_cases)) +
-  geom_tile(color = "white", size = 0.5) +
-  geom_text(aes(color = num_cases > 30), size = 2.5) +
-  scale_x_discrete(position = "top") +
-  scale_fill_gradientn(colors = carto_pal(7, "PurpOr"), name = "Cases") +
-  scale_color_manual(values = c("black", color.light_gray), guide = FALSE) + 
-  labs(title = "Distribution of Force Tactics by Race",
-       subtitle = "Cases involving fare evasion charges") +
-  theme(panel.grid.major = element_blank(),
-        axis.title.x = element_blank(),
-        axis.title.y = element_blank(),
-        axis.text.x = element_text(angle = 45, hjust = 0),
-        plot.title.position = "plot"
-        
-  )
-
 
 #station distribution
 bart_uof.df %>%
@@ -201,7 +178,6 @@ ggsave("output/fare_evasion_cases_by_station.png", dpi = 300, width = 5, height 
 
 
 #time of day, day of week
-
 bart_uof.df %>%
   filter(!is.na(incident_timestamp),
          `Case #` %in% cases.filter) %>%
